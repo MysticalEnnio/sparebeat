@@ -185,7 +185,7 @@ async function uploadScore() {
     })
         .then((res) => res.text())
         .then((data) => {
-            if ((data = {})) {
+            if (data == {}) {
                 console.log("Success!");
                 process.exit();
             } else {
