@@ -92,7 +92,7 @@ async function uploadScore() {
     let rank = (
         await inquirer.prompt([
             {
-                type: "list",
+                type: "search-list",
                 message: "Choose a Rank",
                 name: "rank",
                 choices: [
