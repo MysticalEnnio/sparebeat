@@ -87,7 +87,7 @@ async function uploadScore() {
                 },
             },
         ])
-    ).difficulty;
+    ).score;
 
     let rank = (
         await inquirer.prompt([
@@ -162,14 +162,12 @@ async function uploadScore() {
         ])
     ).perfect;
 
+    let body = `{"musicId":"${songId}","name":"${name}","level":"${difficulty}","score":${score},"rank":"${rank}","emotion":"${emotion}","options":{"random":${random},"mirror":${mirror}},"complete":${complete},"perfect":${perfect}}`;
+
     fetch("https://sparebeat.com/timelines", {
         headers: {
             accept: "application/json, text/plain, _/_",
-            "accept-language": "de,en-US;q=0.9,en;q=0.8",
             "content-type": "application/json;charset=UTF-8",
-            "sec-ch-ua": '"Not_A Brand";v="8", "Chromium";v="120"',
-            "sec-ch-ua-mobile": "?0",
-            "sec-ch-ua-platform": '"macOS"',
             "sec-fetch-dest": "empty",
             "sec-fetch-mode": "cors",
             "sec-fetch-site": "same-origin",
@@ -180,16 +178,17 @@ async function uploadScore() {
             Referer: "https://sparebeat.com/app/",
             "Referrer-Policy": "strict-origin-when-cross-origin",
         },
-        body: `{"musicId":"${songId}","name":"${name}","level":"${difficulty}","score":${score},"rank":"${rank}","emotion":"${emotion}","options":{"random":${random},"mirror":${mirror}},"complete":${complete},"perfect":${perfect}}`,
+        body,
         method: "POST",
     })
         .then((res) => res.text())
         .then((data) => {
-            if (data == {}) {
+            if (data == "{}") {
                 console.log("Success!");
                 process.exit();
             } else {
                 console.log("Error!", data);
+                console.log(body);
                 uploadScore();
             }
         })
